@@ -36,6 +36,9 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '@G': resolve('src/plugin/util/GlobalConstant.js'),
+      '@plug': resolve('src/plugin'),
+      '@util': resolve('src/plugin/util')
     }
   },
   module: {

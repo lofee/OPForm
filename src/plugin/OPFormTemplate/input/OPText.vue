@@ -1,18 +1,17 @@
 <script>
-  import { INPUT_DATA_TYPE_STR } from '../../util/GlobalConstant'
   import { InputBasic } from '../index'
-  import { Title } from '../../OPFormFunctions'
+  import { Title } from '@plug/OPFormFunctions'
+  import { INPUT_DATA_TYPE_STR } from '@G'
 
   const text = new InputBasic({
     dataType: INPUT_DATA_TYPE_STR,
-    functions: []
+    functions: [ Title ]
   })
 
   export default text.component({
-    mixins: [ Title ],
     render () {
-      const title = Title.render.apply(this, arguments)
-      return <div>text->{ title }</div>
+      const { Title } = this.getFunctionRenders(arguments)
+      return <div>{ Title }</div>
     }
   })
 </script>

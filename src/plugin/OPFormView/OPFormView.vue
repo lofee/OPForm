@@ -1,11 +1,11 @@
 <template>
   <div class="op-form-view-main">
-    <o-p-text/>
+    <o-p-text :component-config="{Title: '你好,我是第一个标题'}" />
   </div>
 </template>
 
 <script>
-  import { OPText, FormBasic } from '../OPFormTemplate'
+  import { OPText } from '../OPFormTemplate'
 
   export default {
     name: 'FormView',

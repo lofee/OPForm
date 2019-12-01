@@ -29,7 +29,7 @@ export default class FillBasic {
    * 生成vue对象
    * @param vueOptions
    */
-  component (vueOptions) {
+  component (vueOptions = {}) {
     const basic = {
       // 默认数据
       data: this.data(),
@@ -44,6 +44,7 @@ export default class FillBasic {
       vueOptions.mixins = []
     }
     vueOptions.mixins.unshift(basic)
+    vueOptions.opf = this
 
     return vueOptions
   }
