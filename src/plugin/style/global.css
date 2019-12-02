@@ -1,0 +1,20 @@
+/* 文本颜色控制 */
+.text-muted {
+  color: #777;
+}
+/* 文字大小控制 */
+small,
+.small {
+  font-size: 13px;
+}
+/* 文本位置 */
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+/*# sourceMappingURL=global.css.map */

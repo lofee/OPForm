@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import OPFormView from '../plugin/OPFormView'
 
 export default {
   name: 'HelloWorld',
-  components: { OPFormView },
   data() {
     return {}
   },

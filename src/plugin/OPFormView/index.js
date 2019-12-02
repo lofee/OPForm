@@ -1,3 +1,1 @@
-import OPFormView from './OPFormView'
-
-export default OPFormView
+export { default as OPFormView } from './OPFormView'

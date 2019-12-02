@@ -9,11 +9,8 @@ import FormBasic from './FormBasic'
  * @constructor
  */
 export default class ViewBasic extends FormBasic {
-  constructor ({ dataType, functions }) {
-    super({
-      componentType: VIEW_TYPE_NAME,
-      dataType,
-      functions
-    })
+  constructor (options) {
+    options.componentType = VIEW_TYPE_NAME
+    super(options)
   }
 }

@@ -1,4 +1,3 @@
-import vue from 'vue'
 import {
   INPUT_TYPE_NAME,
   CONTAINER_TYPE_NAME,
@@ -9,6 +8,12 @@ import {
  * 基础表单组件
  */
 export default class FormBasic {
+  /**
+   * 默认配置, 由外部注入
+   * @type {{}}
+   */
+  static baseOption = {}
+
   /**
    * 基本组件属性选项
    */
@@ -32,7 +37,7 @@ export default class FormBasic {
   static basicMethods = {
     // 获取所有组件功能对应的模板管理器
     getFunctionRenders () {
-      return this.op.functions.reduce((map, func) => {
+      return this.op.functionComponents.reduce((map, func) => {
         map[func.opf.key] = func.render.apply(this, arguments)
         return map
       }, {})
@@ -50,26 +55,31 @@ export default class FormBasic {
     }
   }
 
+  // 功能组件
+  functionComponents = null
+
   /**
    * 基本实例化方法
    * @param componentType
    * @param dataType
    * @param functions
+   * @param vueComponent
+   * @param parent
+   * @param otherOptions
    */
-  constructor ({ componentType, dataType, functions = [] }) {
+  constructor ({ componentType, dataType, functions = [], vueComponent = {}, parent, ...otherOptions }) {
     // 主要类型
     this.componentType = componentType
     // 子类型
     this.dataType = dataType
-
-    // 编译模板为render, 统一后期api
-    functions.forEach( f => {
-      if (!f.render && f.template) {
-        f.render = vue.compile(f.template)
-      }
-    } )
+    // vue组件选项
+    this.vueComponent = vueComponent
     // 控件相关功能
     this.functions = functions
+    // 父级组件
+    this.parent = parent
+    // 剩余选项
+    this.otherOptions = otherOptions
 
     // 是否为录入组件
     this._isInput = INPUT_TYPE_NAME === componentType
@@ -81,11 +91,19 @@ export default class FormBasic {
   }
 
   /**
+   * 继承本组件
+   * @param args
+   */
+  extends (args) {
+    args.parent = this
+    return new FormBasic(args)
+  }
+
+  /**
    * 向当前vue对象内注入表单传入的组件配置
    * @param currVue
    */
   injectComponentConfig (currVue) {
-    console.log(currVue)
     Object.entries(currVue.componentConfig).forEach(([k, v]) => {
       currVue[k] = v
     })
@@ -93,11 +111,12 @@ export default class FormBasic {
 
   /**
    * 生成vue对象
-   * @param vueOptions
    */
-  component (vueOptions = {}) {
+  component () {
     const self = this
     const basic = {
+      // 父级组件
+      extends: self.parent && self.parent.component(),
       // 默认数据
       data: self.data(),
       // 可注入参数
@@ -115,14 +134,18 @@ export default class FormBasic {
     }
 
     // 混入基础api
-    if (!vueOptions.mixins) {
-      vueOptions.mixins = []
+    if (!self.vueComponent.mixins) {
+      self.vueComponent.mixins = []
     }
-    vueOptions.mixins.unshift(basic)
+    self.vueComponent.mixins.unshift(basic)
 
-    // 向组件内注入功能
-    Array.prototype.push.apply(vueOptions.mixins, this.functions)
+    if (!self.functionComponents) {
+      // 功能组件
+      self.functionComponents = self.functions.map(f => f.component())
+      // 向组件内注入功能
+      Array.prototype.push.apply(self.vueComponent.mixins, self.functionComponents)
+    }
 
-    return vueOptions
+    return self.vueComponent
   }
 }

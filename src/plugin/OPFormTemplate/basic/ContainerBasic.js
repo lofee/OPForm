@@ -9,11 +9,8 @@ import FormBasic from './FormBasic'
  * @constructor
  */
 export default class ContainerBasic extends FormBasic {
-  constructor ({ dataType, functions }) {
-    super({
-      componentType: CONTAINER_TYPE_NAME,
-      dataType,
-      functions
-    })
+  constructor (options) {
+    options.componentType = CONTAINER_TYPE_NAME
+    super(options)
   }
 }
