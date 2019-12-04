@@ -1,12 +1,23 @@
 <template>
   <div class="op-form-view-main">
-    <o-p-text :component-config="{Title: '你好,我是第一个标题', Desc: '我是描述信息'}" />
+    <template v-for="cfg in formConfig">
+      <component v-model="dataMap[cfg.id]" :is="cfg.componentId" :component-config="cfg" :key="cfg.id" :readOnly="readOnly" />
+    </template>
   </div>
 </template>
 
 <script>
   export default {
     name: 'OPFormView',
+    data () {
+      return {
+        dataMap: {}
+      }
+    },
+    created () {
+      // 将数组注入dataMap
+      this.formData.forEach(d => this.dataMap[d.id] = d.value)
+    },
     props: {
       // 表单配置
       formConfig: {
@@ -14,7 +25,7 @@
         default () { return [] }
       },
       // 表单数据
-      data: {
+      formData: {
         type: Array,
         default () { return [] }
       },
@@ -22,6 +33,11 @@
       rules: {
         type: Array,
         default () { return [] }
+      },
+      // 表单是否只读
+      readOnly: {
+        type: Boolean,
+        default: false
       }
     }
   }

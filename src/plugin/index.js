@@ -1,6 +1,6 @@
-import { FormBasic, OPText } from './OPFormTemplate'
-import { OPFormView } from './OPFormView'
-import './style/global.css'
+import { OPFormDesign } from '@plug/OPFormDesign'
+import formViewPlugin from '@plug/OPFormView'
+import OPFormView from '@/plugin/OPFormView/OPFormView'
 
 export default {
   /**
@@ -8,10 +8,11 @@ export default {
    * @param vue
    * @param options
    */
-  install (vue, options) {
-    // FormBasic.baseOption = options
-    vue.component(OPFormView.name, OPFormView)
-    const text = OPText.component()
-    vue.component(text.name, text)
+  install (vue, { formView, ...formDesignOptions }) {
+    // 先安装FormView
+    formViewPlugin.install(vue, formView)
+
+    // 开始安装表单设计组件
+    vue.component(OPFormDesign.name, OPFormDesign)
   }
 }

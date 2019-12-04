@@ -7,12 +7,25 @@ const text = new InputBasic({
   functions: [ Title, Desc ],
   vueComponent: {
     name: 'OPText',
+    model: {
+      prop: 'value',
+      event: 'input'
+    },
+    props: {
+      value: String
+    },
     render () {
       const { Title, Desc } = this.getFunctionRenders(arguments)
       return (
         <div className="op-form-input">
           {Title}
-          <input type="text"/>
+          <input
+            class="input-text"
+            type="text"
+            onInput={e => this.$emit('input', e.target.value)}
+            value={this.value}
+            readOnly={this.readOnly}
+          />
           {Desc}
         </div>
       )
