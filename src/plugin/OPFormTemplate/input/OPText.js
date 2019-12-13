@@ -3,10 +3,10 @@ import { Title, Desc } from '@plug/OPFormFunctions'
 import { INPUT_DATA_TYPE_STR } from '@G'
 
 const text = new InputBasic({
+  name: 'OPText',
   dataType: INPUT_DATA_TYPE_STR,
   functions: [ Title, Desc ],
   vueComponent: {
-    name: 'OPText',
     model: {
       prop: 'value',
       event: 'input'

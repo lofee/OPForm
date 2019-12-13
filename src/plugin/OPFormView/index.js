@@ -11,7 +11,10 @@ export default {
   install (vue, options) {
     FormBasic.baseOption = options
     vue.component(OPFormView.name, OPFormView)
+    // 注入的表单组件
+    OPFormView.formComponents = []
     const text = OPText.component()
     vue.component(text.name, text)
+    OPFormView.formComponents.push(OPText)
   }
 }

@@ -41,6 +41,13 @@ export default class FormBasic {
         map[func.opf.key] = func.render.apply(this, arguments)
         return map
       }, {})
+    },
+    // 获取配置结果
+    getConfigResult () {
+      return this.op.functions.reduce((cfgRet, func) => {
+        cfgRet[func.key] = this[func.key]
+        return cfgRet
+      }, {})
     }
   }
 
@@ -60,6 +67,9 @@ export default class FormBasic {
 
   /**
    * 基本实例化方法
+   * @param name
+   * @param label
+   * @param category
    * @param componentType
    * @param dataType
    * @param functions
@@ -67,7 +77,26 @@ export default class FormBasic {
    * @param parent
    * @param otherOptions
    */
-  constructor ({ componentType, dataType, functions = [], vueComponent = {}, parent, ...otherOptions }) {
+  constructor ({
+                 name,
+                 label,
+                 category = 'default',
+                 componentType,
+                 dataType,
+                 functions = [],
+                 vueComponent = {},
+                 parent,
+                 ...otherOptions
+               }) {
+    if (!name) {
+      throw new Error('请设置一个组件名称')
+    }
+    // 组件名称
+    this.name = name
+    // 组件标题
+    this.label = label
+    // 组件分类
+    this.category = category
     // 主要类型
     this.componentType = componentType
     // 子类型
@@ -84,10 +113,12 @@ export default class FormBasic {
     // 是否为录入组件
     this._isInput = INPUT_TYPE_NAME === componentType
     // 是否为容器组件
-    this._isContainer = CONTAINER_TYPE_NAME === componentType,
+    this._isContainer = CONTAINER_TYPE_NAME === componentType
     // 是否为视图组件
     this._isView = VIEW_TYPE_NAME === componentType
 
+    // 组件名称赋给vueComponent
+    this.vueComponent.name = name
   }
 
   /**

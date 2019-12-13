@@ -1,6 +1,5 @@
 import { OPFormDesign } from '@plug/OPFormDesign'
 import formViewPlugin from '@plug/OPFormView'
-import OPFormView from '@/plugin/OPFormView/OPFormView'
 
 export default {
   /**

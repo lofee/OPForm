@@ -1,7 +1,7 @@
-import FillBasic from '../../basic/FillBasic'
+import FuncBasic from '../../basic/FuncBasic'
 import './title.less'
 
-const title = new FillBasic({
+const title = new FuncBasic({
   key: 'Title',
   defaultValue: '未命名',
   vueComponent: {

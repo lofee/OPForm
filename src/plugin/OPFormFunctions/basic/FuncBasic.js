@@ -3,7 +3,7 @@ import vue from 'vue'
 /**
  * 基础功能api
  */
-export default class FillBasic {
+export default class FuncBasic {
   /**
    * 功能实例化
    * @param key
@@ -29,6 +29,24 @@ export default class FillBasic {
       Object.assign(vueComponent, vue.compile(vueComponent.template))
     }
 
+    // 设置组件名称
+    vueComponent.name = key
+  }
+
+  /**
+   * 设置配置项
+   * @param setting
+   */
+  set setting (setting) {
+    this._setting = setting
+  }
+
+  /**
+   * 获取配置项组件
+   * @returns {*}
+   */
+  get setting () {
+    return this._setting
   }
 
   /**
@@ -45,11 +63,11 @@ export default class FillBasic {
   /**
    * 继承该功能组件
    * @param args
-   * @returns {FillBasic}
+   * @returns {FuncBasic}
    */
   extends (args = {}) {
     args.parent = this
-    return new FillBasic(args)
+    return new FuncBasic(args)
   }
 
   /**
@@ -74,6 +92,11 @@ export default class FillBasic {
     }
     self.vueComponent.mixins.unshift(basic)
     self.vueComponent.opf = self
+
+    if (this.setting) {
+      // 获取配置组件的vue配置
+      this.settingComp = this.setting.component()
+    }
 
     return self.vueComponent
   }

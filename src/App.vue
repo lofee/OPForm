@@ -1,13 +1,25 @@
 <template>
   <div id="app">
-    <router-view/>
+    <o-p-form-design
+      :formConfig="formConfig"
+      :supportComponentNames="[ 'OPText' ]"
+    ></o-p-form-design>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  import formConfig from '@/mock/formConfig'
+  import OPFormDesign from '@/plugin/OPFormDesign/OPFormDesign'
+
+  export default {
+    name: 'App',
+    components: { OPFormDesign },
+    data() {
+      return {
+        formConfig
+      }
+    }
+  }
 </script>
 
 <style>

@@ -1,0 +1,21 @@
+{
+  "formConfig": [
+    {
+      "Title": "你好,我是第1个标题",
+      "Desc": "我是描述信息",
+      "compName": "OPText",
+      "id": "dataid"
+    },
+    {
+      "Title": "你好,我是第2个标题",
+      "Desc": "我是描述信息",
+      "compName": "OPText",
+      "id": "dataid2"
+    }
+  ],
+  "formData": {
+    "dataid": "你好",
+    "dataid2": "你好2"
+  },
+  "isDesign": true
+}
