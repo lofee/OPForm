@@ -4,6 +4,7 @@ import { INPUT_DATA_TYPE_STR } from '@G'
 
 const text = new InputBasic({
   name: 'OPText',
+  label: '单行文本',
   dataType: INPUT_DATA_TYPE_STR,
   functions: [ Title, Desc ],
   vueComponent: {
@@ -17,7 +18,7 @@ const text = new InputBasic({
     render () {
       const { Title, Desc } = this.getFunctionRenders(arguments)
       return (
-        <div className="op-form-input">
+        <div class="op-form-input">
           {Title}
           <input
             class="input-text"

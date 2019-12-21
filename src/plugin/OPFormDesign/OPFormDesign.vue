@@ -14,15 +14,21 @@
     <o-p-form-view
       v-bind="formConfig"
       @select-component="openTheCfg"
+      :designData="designData"
       isDesign
-      readOnly
     ></o-p-form-view>
 
     <!-- 组件库 -->
     <div class="op-form-input-store-main" :class="formInputStroeClass">
-      <template v-for="comp in supportComponents">
-        <a :key="comp.name">{{ comp.name }}</a>
-      </template>
+      <draggable
+        :clone="cloneFormCfg"
+        :group="group"
+        :list="supportComponents"
+      >
+        <template v-for="comp in supportComponents">
+          <a :key="comp.name">{{ comp.label }}</a>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
@@ -30,11 +36,18 @@
 <script>
   import uuid from 'uuid/v1'
   import OPFormView from '@plug/OPFormView/OPFormView.vue'
+  import draggable from 'vuedraggable'
 
   // 组件配置map, 便于搜寻组件信息
   const formConfigMap = {}
   // 组件map, 便于获取
   const formComponentMap = {}
+  // 拖拽分组信息
+  const group = {
+    name: 'formComponent',
+    pull: 'clone',
+    put: false
+  }
 
   /**
    * @Date 2019-12-06 22:34
@@ -44,11 +57,21 @@
    */
   export default {
     name: 'OPFormDesign',
+    components: { draggable },
     data () {
       return {
+        // 支持的组件
         supportComponents: [],
+        // 当前组件的功能
         currFuncs: [],
-        currCompCfg: null
+        // 当前组件功能的配置
+        currCompCfg: null,
+        // 表单设计相关的数据
+        designData: {
+          group: group.name
+        },
+        // 分组信息
+        group
       }
     },
     methods: {
@@ -91,6 +114,26 @@
       cfgChanged (value, key) {
         this.currCompCfg[key] = value
         this.modifyComponent(this.currCompCfg)
+      },
+      // 转换组件信息为表单配置
+      cloneFormCfg ({ name, functions }) {
+        const joinComponent = {}
+
+        if (!name) {
+          throw new Error('该组件没有命名, 无法定位实际组件')
+        }
+
+        // 组件名称
+        joinComponent.compName = name
+        // 组件ID
+        joinComponent.id = uuid()
+
+        // 开始加载功能及相关默认值
+        functions.forEach(func => {
+          joinComponent[func.key] = func.defaultValue
+        })
+
+        return joinComponent
       }
     },
     computed: {

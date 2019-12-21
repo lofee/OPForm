@@ -1,14 +1,15 @@
 <template>
   <div class="op-form-view-main">
-    <o-p-form-view-dragger :list="formConfig" :is-design="isDesign">
+    <o-p-form-view-dragger :list="formConfig" :is-design="isDesign" :group="designData.group">
       <template v-for="cfg in formConfig">
         <component
+          class="o-p-form-component"
           ref="formComponent"
           v-model="dataMap[cfg.id]"
           :is="cfg.compName"
           :component-config="cfg"
           :key="cfg.id"
-          :readOnly="readOnly"
+          :readOnly="readOnly || isDesign"
           :formStatus="{ isDesign }"
           @click.native="selectComponent(cfg)"
         />
@@ -19,6 +20,7 @@
 
 <script>
   import OPFormViewDragger from './OPFormViewDragger'
+  import ruleLoad from '@plug/util/ruleLoad'
 
   export default {
     name: 'OPFormView',
@@ -43,6 +45,10 @@
         return formConfig
       }
     },
+    created () {
+      // 开始加载规则
+      ruleLoad(this, this.rules)
+    },
     props: {
       // 表单配置
       formConfig: { type: Array, default () { return [] } },
@@ -53,7 +59,9 @@
       // 表单是否只读
       readOnly: { type: Boolean, default: false },
       // 是否是设计状态
-      isDesign: { type: Boolean, default: false }
+      isDesign: { type: Boolean, default: false },
+      // 表单设计时的相关数据
+      designData: { type: Object, default () { return {} } }
     }
   }
 </script>
